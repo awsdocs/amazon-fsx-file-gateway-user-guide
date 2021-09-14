@@ -2,6 +2,8 @@
 
 This guide describes Amazon FSx File Gateway, which provides access to in-cloud Amazon FSx for Windows File Server shares from on-premises facilities. Includes instructions on working with the console and the API.
 
+You can navigate the guide starting from the [index](doc_source/index.md).
+
 ## Security
 
 See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
