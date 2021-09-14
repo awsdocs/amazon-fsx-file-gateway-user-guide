@@ -1,11 +1,6 @@
-## My Project
+## Amazon FSx File Gateway User Guide
 
-TODO: Fill this README out!
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+Describes Amazon FSx File Gateway, which provides access to in-cloud Amazon FSx for Windows File Server shares from on-premises facilities. Includes instructions on working with the console and the API.
 
 ## Security
 
