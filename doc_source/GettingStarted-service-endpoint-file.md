@@ -4,7 +4,7 @@ In this step, you choose a service endpoint for your gateway in Storage Gateway\
 
 You can activate your gateway using:
 + A public service endpoint and have your gateway communicate with AWS storage services over the public internet\.
-+ A public service endpoint and have your gateway communicate with AWS storage services using a virtual private cloud \(VPC\) endpoint, which is private\.
++ A private service endpoint and have your gateway communicate with AWS storage services using a virtual private cloud \(VPC\) endpoint, which is private\.
 
 ------
 #### [ New console ]
