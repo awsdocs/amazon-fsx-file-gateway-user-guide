@@ -87,7 +87,12 @@ The following ports are common to all gateway types and are required by all gate
 |  TCP  |  80 \(HTTP\)  |  Inbound  |  The host from which you connect to the AWS Management Console\.  |  Storage Gateway  |  By local systems to obtain the storage gateway activation key\. Port 80 is only used during activation of the Storage Gateway appliance\.  Storage Gateway does not require port 80 to be publicly accessible\. The required level of access to port 80 depends on your network configuration\. If you activate your gateway from the Storage Gateway console, the host from which you connect to the console must have access to your gateway’s port 80\.  | 
 |  UDP/UDP  |  53 \(DNS\)  |  Outbound  |  Storage Gateway  |  DNS server  |  For communication between Storage Gateway and the DNS server\.  | 
 |  TCP  |  22 \(Support channel\)  |  Outbound  |  Storage Gateway  |  AWS Support  |  Allows AWS Support to access your gateway to help you with troubleshooting gateway issues\. You don't need this port open for the normal operation of your gateway, but it is required for troubleshooting\.  | 
-|  UDP  |  123 \(NTP\)  |  Outbound  |  NTP client  |  NTP server  |  Used by local systems to synchronize VM time to the host time\.   | 
+|  UDP  |  123 \(NTP\)  |  Outbound  |  NTP client  |  NTP server  |  Used by local systems to synchronize VM time to the host time\.   |
+|  TCP  |  1026  |  Outbound  |    |    |  Used for control traffic  | 
+|  TCP  |  1027  | Outbound |    |    |  Used only during activation and can then be closed  | 
+|  TCP  | 1028 | Outbound |    |    | Used for control traffic | 
+|  TCP  |  1031  | Outbound |    |    |  Used only for software updates for file gateways  | 
+
 
 **Ports for file gateways**
 
@@ -107,10 +112,6 @@ FSx File requires the following ports\.
 |  TCP \(HTTPS\)  |  443  |  Outbound  |    |  Storage Gateway service endpoints  |  Management control – Used for communication from an Storage Gateway VM to an AWS service endpoint  | 
 |  TCP HTTPS  |  443  |  Outbound  |  |  Amazon CloudFront  |  For gateway activation  | 
 |  TCP  |  443  |  Outbound  |    |  VPC endpoint usage  |  Management control – Used for communication from an Storage Gateway VM to an AWS service endpoint\.  | 
-|  TCP  |  1026  |  Outbound  |    |    |  Used for control traffic  | 
-|  TCP  |  1027  | Outbound |    |    |  Used only during activation and can then be closed  | 
-|  TCP  | 1028 | Outbound |    |    | Used for control traffic | 
-|  TCP  |  1031  | Outbound |    |    |  Used only for software updates for file gateways  | 
 |  TCP  |  2222  |  Outbound  |    |    |  Used to open a support channel to the gateway when using VPC endpoints  | 
 |  TCP \(HTTPS\)  |  8080  |  Inbound  |    |    |  Required briefly for activation of a hardware appliance  | 
 
