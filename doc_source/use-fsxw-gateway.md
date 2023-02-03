@@ -1,14 +1,24 @@
+--------
+
+Amazon S3 File Gateway documentation has been moved to [What is Amazon S3 File Gateway?](https://docs.aws.amazon.com/filegateway/latest/files3/WhatIsStorageGateway.html)
+
+Volume Gateway documentation has been moved to [What is Volume Gateway?](https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html)
+
+Tape Gateway documentation has been moved to [What is Tape Gateway?](https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html)
+
+--------
+
 # Mount and use your file share<a name="use-fsxw-gateway"></a>
 
-Before mounting your file share on the client, wait for the status of the Amazon FSx file system to change to **Available**\. After your file share is mounted, you can start using your Amazon FSx File Gateway \(FSx File\)\.
+Before mounting your file share on the client, wait for the status of the Amazon FSx file system to change to **Available**\. After your file share is mounted, you can start using your Amazon FSx File Gateway \(FSx File Gateway\)\.
 
 **Topics**
 + [Mount your SMB file share on your client](#mount-smb-fsxwfileshare)
-+ [Test your FSx File](#TestFileFsxShare)
++ [Test your FSx File Gateway](#TestFileFsxShare)
 
 ## Mount your SMB file share on your client<a name="mount-smb-fsxwfileshare"></a>
 
-In this step, you mount your SMB file share and map to a drive that is accessible to your client\. The console's file gateway section shows the supported mount commands that you can use for SMB clients\. Following are some additional options to try\.
+In this step, you mount your SMB file share and map to a drive that is accessible to your client\. The console's File Gateway section shows the supported mount commands that you can use for SMB clients\. Following are some additional options to try\.
 
 You can use several different methods for mounting SMB file shares, including the following:
 + The `net use` command – Doesn't persist across system reboots, unless you use the `/persistent:(yes:no)` switch\.
@@ -47,8 +57,8 @@ When mounting file shares, you might need to remount your file share after reboo
 
 1. In the navigation pane, choose **This PC**\.
 
-1. On the **Computer** tab, choose **Map network drive**, and then choose **Map network drive** again, as shown in the following screenshot\.  
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/map-on-windows-explorer.png)  
+1. On the **Computer** tab, choose **Map network drive**, and then choose **Map network drive** again, as shown in the following screen shot\.  
+![\[windows file explorer with this pc, the computer tab, and map network drive selected.\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/map-on-windows-explorer.png)  
   
 
 
@@ -62,15 +72,15 @@ When mounting file shares, you might need to remount your file share after reboo
 
 1. Choose **Finish** to complete your mount point\.
 
-## Test your FSx File<a name="TestFileFsxShare"></a>
+## Test your FSx File Gateway<a name="TestFileFsxShare"></a>
 
  You can copy files and directories to your mapped drive\. The files automatically upload to your FSx for Windows File Server file system\.
 
 **To upload files from your Windows client to Amazon FSx**
 
-1. On your Windows client, navigate to the drive that you mounted your file share on\. The name of your drive is preceded by the name of your file system name\.
+1. On your Windows client, navigate to the drive that you mounted your file system on\. The name of the drive is preceded by the name of your file system\.
 
 1. Copy files or a directory to the drive\.
 
 **Note**  
-File gateways don't support creating hard or symbolic links on a file share\.
+File Gateways don't support creating hard or symbolic links on a file share\.

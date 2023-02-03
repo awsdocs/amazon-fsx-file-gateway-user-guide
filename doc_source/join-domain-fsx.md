@@ -1,15 +1,24 @@
+--------
+
+Amazon S3 File Gateway documentation has been moved to [What is Amazon S3 File Gateway?](https://docs.aws.amazon.com/filegateway/latest/files3/WhatIsStorageGateway.html)
+
+Volume Gateway documentation has been moved to [What is Volume Gateway?](https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html)
+
+Tape Gateway documentation has been moved to [What is Tape Gateway?](https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html)
+
+--------
+
 # Configure Active Directory settings<a name="join-domain-fsx"></a>
 
 In this step, you configure your Amazon FSx File Gateway access settings in Storage Gateway to join a Microsoft Active Directory\.
 
-------
-#### [ New console ]
-
 **To configure Active Directory settings**
 
-1. In the Storage Gateway console, choose **Attach FSx file system**\.
+1. In the Storage Gateway console, choose **FSx file systems** from the navigation menu\.
 
-1. On the **Confirm gateway** page, in the list of gateways, choose the Amazon FSx File Gateway that you want to use\. 
+1. Choose **Attach FSx file system**\.
+
+1. On the **Confirm gateway** page, choose the gateway you want to join to your Active Directory domain from the drop\-down menu\.
 
    If you don't have a gateway, you must create one\. Make sure your gateway can resolve the name of your Active Directory Domain Controller\. For information, see [Required prerequisites](Requirements.md#user-requirements)\.
 
@@ -17,35 +26,16 @@ In this step, you configure your Amazon FSx File Gateway access settings in Stor
 **Note**  
 If your gateway is already joined to a domain, you don't need to join again\. Go to the next step\.
    +  For **Domain name**, enter the domain name of the Active Directory that you want to use\.
-   + For **Domain user**, enter a user name for the Active Directory\.
-   + For **Domain password**, enter the password for the domain user\.
-**Note**  
-Your account must be able to join a server to a domain\.
+   + For **Domain user**, enter the user name of the Active Directory user that you want to use to join the gateway to the domain\. This user must have the necessary permissions\.
+   + For **Domain password**, enter the password for the user\.
    + For **Organizational unit\- optional**, you can specify an organizational unit the Active Directory belongs to\.
+**Note**  
+If you leave this field blank, joining a domain creates an Active Directory computer account in the default computers container \(which is not an OU\), using the gateway's **Gateway ID** as the account name \(for example, SGW\-1234ADE\)\.  
+If your Active Directory environment requires that you pre\-stage accounts to facilitate the join domain process, you will need to create this account ahead of time\.  
+If your Active Directory environment has a designated OU for new computer objects, you must specify that OU when joining the domain\.
    + Enter a value for **Domain controller\(s\) \- optional**\. 
 
 1. Choose **Next** to open the **Attach FSx File system** page\.
-
-------
-#### [ Original console ]
-
-**To configure Microsoft Active Directory access settings**
-
-1. Choose **Gateways**, and on the Gateway page, select the check box next to the Amazon FSx file gateway that you want to join to a domain\.
-
-   If you don't have a gateway, you must create one\. Make sure your gateway can resolve the name of your Active Directory Domain Controller\. For information, see [Required prerequisites](Requirements.md#user-requirements)\.
-
-1. From **Actions**, choose **Edit SMB settings**\.
-
-1. Choose the pencil icon in the upper\-right corner of the Active Directory settings section\.
-
-1. Enter the values for **Domain name**, **Domain user**, and **Domain password**\. Optionally, you can specify an organizational unit, and domain controllers\. 
-
-1. Choose **Save**, and then choose **Close**\.
-**Note**  
-If a file system is attached to a gateway, you can’t edit the domain information\. You need to detach the file system and then you can change the domain information\. The pencil icon for editing is not active, as seen following, if the gateway has one or more file systems attached\.
-
-------
 
 **Next step**
 

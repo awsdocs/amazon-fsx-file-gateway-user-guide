@@ -1,3 +1,13 @@
+--------
+
+Amazon S3 File Gateway documentation has been moved to [What is Amazon S3 File Gateway?](https://docs.aws.amazon.com/filegateway/latest/files3/WhatIsStorageGateway.html)
+
+Volume Gateway documentation has been moved to [What is Volume Gateway?](https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html)
+
+Tape Gateway documentation has been moved to [What is Tape Gateway?](https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html)
+
+--------
+
 # Managing local disks for your Storage Gateway<a name="ManagingLocalStorage-common"></a>
 
 The gateway virtual machine \(VM\) uses the local disks that you allocate on\-premises for buffering and storage\. Gateways created on Amazon EC2 instances use Amazon EBS volumes as local disks\. 
@@ -5,52 +15,53 @@ The gateway virtual machine \(VM\) uses the local disks that you allocate on\-pr
 **Topics**
 + [Deciding the amount of local disk storage](#decide-local-disks-and-sizes)
 + [Determining the size of cache storage to allocate](#CachedLocalDiskCacheSizing-common)
-+ [Adding cache storage](#ConfiguringLocalDiskStorage)
++ [Configuring additional cache storage](#ConfiguringLocalDiskStorage)
++ [Using ephemeral storage with EC2 gateways](#ephemeral-disk-cache)
 
 ## Deciding the amount of local disk storage<a name="decide-local-disks-and-sizes"></a>
 
-The number and size of disks that you want to allocate for your gateway is up to you\. The gateway requires the following additional storage:
-
-File gateways require at least one disk to use as a cache\. The following table recommends sizes for local disk storage for your deployed gateway\. You can add more local storage later after you set up the gateway, and as your workload demands increase\.
-
-
-| Local storage | Description | Gateway type | 
-| --- | --- | --- | 
-| Cache storage | The cache storage acts as the on\-premises durable store for data that is pending upload to Amazon S3 or file system\. |  [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/ManagingLocalStorage-common.html)  | 
+The number and size of disks that you want to allocate for your gateway is up to you\. File Gateways require at least one 150 GiB disk to use as a cache\. The cache storage acts as the on\-premises durable store for data that is pending upload to Amazon S3 or file system\. After the initial configuration and deployment of your gateway, you can add more disks for cache storage as your workload demands increase\.
 
 **Note**  
 Underlying physical storage resources are represented as a data store in VMware\. When you deploy the gateway VM, you choose a data store on which to store the VM files\. When you provision a local disk \(for example, to use as cache storage\), you have the option to store the virtual disk in the same data store as the VM or a different data store\.  
 If you have more than one data store, we strongly recommend that you choose one data store for the cache storage\. A data store that is backed by only one underlying physical disk can lead to poor performance in some situations when it is used to back both the cache storage\. This is also true if the backup is a less\-performant RAID configuration such as RAID1\.
 
-After the initial configuration and deployment of your gateway, you can adjust the local storage by adding disks for cache storage\.
-
 ## Determining the size of cache storage to allocate<a name="CachedLocalDiskCacheSizing-common"></a>
 
-You can initially use this approximation to provision disks for the cache storage\. You can then use Amazon CloudWatch operational metrics to monitor the cache storage usage and provision more storage as needed using the console\. For information on using the metrics and setting up alarms, see [Performance](Performance.md)\.
+You can use the initial approximation of 150 GiB to provision disks for the cache storage during gateway setup\. You can then use Amazon CloudWatch operational metrics to monitor the cache storage usage and provision more storage as needed using the console\. For information on using the metrics and setting up alarms, see [Performance](Performance.md)\.
 
-## Adding cache storage<a name="ConfiguringLocalDiskStorage"></a>
+## Configuring additional cache storage<a name="ConfiguringLocalDiskStorage"></a>
 
-As your application needs change, you can increase the gateway's cache storage capacity\. You can add more cache capacity to your gateway without interrupting existing gateway functions\. When you add more storage capacity, you do so with the gateway VM turned on\.
+As your application needs change, you can increase the gateway's cache storage capacity\. You can add storage capacity to your gateway without interrupting functionality or causing downtime\. When you add more storage, you do so with the gateway VM turned on\.
 
 **Important**  
-When adding cache to an existing gateway, it is important to create new disks in your host \(hypervisor or Amazon EC2 instance\)\. Don't change the size of existing disks if the disks have been previously allocated as either a cache\. Do not remove cache disks that have been allocated as cache storage\.
+When adding cache to an existing gateway, you must create new disks on the gateway host hypervisor or Amazon EC2 instance\. Do not remove or change the size of existing disks that have already been allocated as cache\.<a name="GatewayWorkingStorageCachedTaskBuffer"></a>
 
- The following procedure shows you how to configure or cache storage for your gateway\.<a name="GatewayWorkingStorageCachedTaskBuffer"></a>
+**To configure additional cache storage for your gateway**
 
-**To add and configure or cache storage**
-
-1. Provision a new disk in your host \(hypervisor or Amazon EC2 instance\)\. For information about how to provision a disk in a hypervisor, see your hypervisor's user manual\. You configure this disk as cache storage\.
+1. Provision one or more new disks on your gateway host hypervisor or Amazon EC2 instance\. For information about how to provision a disk on a hypervisor, see your hypervisor's documentation\. For information about provisioning Amazon EBS volumes for an Amazon EC2 instance, see [Amazon EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes.html) in the *Amazon Elastic Compute Cloud User Guide for Linux Instances*\. In the following steps, you will configure this disk as cache storage\.
 
 1. Open the Storage Gateway console at [https://console\.aws\.amazon\.com/storagegateway/home](https://console.aws.amazon.com/storagegateway/)\.
 
 1. In the navigation pane, choose **Gateways**\.
 
-1. In the **Actions** menu, choose **Edit local disks**\.
+1. Search for your gateway and select it from the list\.
 
-1. In the Edit local disks dialog box, identify the disks you provisioned and decide which one you want to use for cached storage\.
+1. From the **Actions** menu, choose **Configure storage**\.
 
-   If you don't see your disks, choose the **Refresh** button\.
+1. In the **Configure storage** section, identify the disks you provisioned\. If you don't see your disks, choose the refresh icon to refresh the list\. For each disk, choose **CACHE STORAGE** from the **Allocated to** drop\-down menu\.
+**Note**  
+**CACHE STORAGE** is the only available option for allocating disks on File Gateways\.
 
-1. Choose **Save** to save your configuration settings\.
+1. Choose **Save changes** to save your configuration settings\.
 
-FSx File doesn't support ephemeral storage\.
+## Using ephemeral storage with EC2 gateways<a name="ephemeral-disk-cache"></a>
+
+We do not recommend the use of ephemeral disks for cache storage on FSx File Gateways\.
+
+Ephemeral disks provide temporary block\-level storage for your Amazon EC2 instance\. When you launch your gateway with an Amazon EC2 Amazon Machine Image and the instance type you select supports ephemeral storage, the ephemeral disks are listed automatically\. You can select one of the disks to store your gateway's cache data\. For more information, see [Amazon EC2 instance store](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html) in the *Amazon EC2 User Guide for Linux Instances*\.
+
+Data that applications write to the gateway is stored synchronously in cache on the ephemeral disks, and then asynchronously uploaded to durable storage in FSx for Windows File Server\. If the Amazon EC2 instance is stopped after data is written to ephemeral storage, but before an asynchronous upload occurs, any data that has not yet been uploaded to FSx for Windows File Server can be lost\.
+
+**Important**  
+If you stop and start an Amazon EC2 gateway that uses ephemeral storage, the gateway will be permanently offline\. This happens because the physical storage disk is replaced\. There is no work\-around for this issue\. The only resolution is to delete the gateway and activate a new one on a new EC2 instance\.

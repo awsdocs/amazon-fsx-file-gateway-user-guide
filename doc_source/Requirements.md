@@ -1,22 +1,32 @@
-# File gateway setup requirements<a name="Requirements"></a>
+--------
 
-Unless otherwise noted, the following requirements are common to all file gateway types in Storage Gateway\. Your setup must meet the requirements in this section\. Review the requirements that apply to your gateway setup before you deploy your gateway\.
+Amazon S3 File Gateway documentation has been moved to [What is Amazon S3 File Gateway?](https://docs.aws.amazon.com/filegateway/latest/files3/WhatIsStorageGateway.html)
+
+Volume Gateway documentation has been moved to [What is Volume Gateway?](https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html)
+
+Tape Gateway documentation has been moved to [What is Tape Gateway?](https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html)
+
+--------
+
+# File Gateway setup requirements<a name="Requirements"></a>
+
+Unless otherwise noted, the following requirements are common to all File Gateway types in AWS Storage Gateway\. Your setup must meet the requirements in this section\. Review the requirements that apply to your gateway setup before you deploy your gateway\.
 
 **Topics**
 + [Required prerequisites](#user-requirements)
 + [Hardware and storage requirements](#requirements-hardware-storage)
 + [Network and firewall requirements](#networks)
 + [Supported hypervisors and host requirements](#requirements-host)
-+ [Supported SMB clients for a file gateway](#requirements-smb-versions)
-+ [Supported file system operations for a file gateway](#requirements-file-operations)
++ [Supported SMB clients for a File Gateway](#requirements-smb-versions)
++ [Supported file system operations for a File Gateway](#requirements-file-operations)
 
 ## Required prerequisites<a name="user-requirements"></a>
 
-Before you use an Amazon FSx File Gateway \(FSx File\), you must meet the following requirements:
-+ Create and configure an FSx for Windows File Server file system\. For instructions, see [Step 1: Create Your File System](https://docs.aws.amazon.com/fsx/latest/WindowsGuide/getting-started-step1.html) in the *FSx for Windows File Server User Guide*\.
+Before you use an Amazon FSx File Gateway \(FSx File Gateway\), you must meet the following requirements:
++ Create and configure an FSx for Windows File Server file system\. For instructions, see [Step 1: Create Your File System](https://docs.aws.amazon.com/fsx/latest/WindowsGuide/getting-started-step1.html) in the *Amazon FSx for Windows File Server User Guide*\.
 + Configure Microsoft Active Directory \(AD\)\.
 + Ensure that there is sufficient network bandwidth between the gateway and AWS\. A minimum of 100 Mbps is required to successfully download, activate, and update the gateway\.
-+ Configure your private networking, VPN, or AWS Direct Connect between your Amazon Virtual Private Cloud \(Amazon VPC\) and the on\-premises environment where you are deploying your FSx File\.
++ Configure your private networking, VPN, or AWS Direct Connect between your Amazon Virtual Private Cloud \(Amazon VPC\) and the on\-premises environment where you are deploying your gateway\.
 + Make sure your gateway can resolve the name of your Active Directory Domain Controller\. You can use DHCP in your Active Directory domain to handle resolution, or specify a DNS server manually from the Network Configuration settings menu in the gateway local console\.
 
 ## Hardware and storage requirements<a name="requirements-hardware-storage"></a>
@@ -27,18 +37,20 @@ The following sections provide information about the minimum required hardware a
 
 When deploying your gateway on\-premises, ensure that the underlying hardware on which you deploy the gateway virtual machine \(VM\) can dedicate the following minimum resources:
 + Four virtual processors assigned to the VM
-+ 16 GiB of reserved RAM for file gateways
++ 16 GiB of reserved RAM for File Gateways
 + 80 GiB of disk space for installation of VM image and system data
 
 ### Requirements for Amazon EC2 instance types<a name="requirements-hardware-ec2"></a>
 
 When deploying your gateway on Amazon Elastic Compute Cloud \(Amazon EC2\), the instance size must be at least **`xlarge`** for your gateway to function\. However, for the compute\-optimized instance family the size must be at least **`2xlarge`**\. Use one of the following instance types recommended for your gateway type\.
 
-**Recommended for file gateway types**
-+ General\-purpose instance family – m4 or m5 instance type\.
-+ Compute\-optimized instance family – c4 or c5 instance types\. Choose the **2xlarge** instance size or higher to meet the required RAM requirements\.
-+ Memory\-optimized instance family – r3 instance types\.
-+ Storage\-optimized instance family – i3 instance types\.
+**Recommended for File Gateway types**
++ General\-purpose instance family – **m4, m5, or m6** instance type\.
+**Note**  
+We don't recommend using the **m4\.16xlarge** instance type\.
++ Compute\-optimized instance family – **c4, c5, or c6** instance types\. Choose the **2xlarge** instance size or higher to meet the required RAM requirements\.
++ Memory\-optimized instance family – **r3, r5, or r6** instance types\.
++ Storage\-optimized instance family – **i3 or i4** instance types\.
 **Note**  
 When you launch your gateway in Amazon EC2 and the instance type you choose supports ephemeral storage, the disks are listed automatically\. For more information about Amazon EC2 instance storage, see [Instance storage](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html) in the *Amazon EC2 User Guide\.* 
 
@@ -49,7 +61,7 @@ In addition to 80 GiB of disk space for the VM, you also need additional disks f
 
 | Gateway type | Cache \(minimum\) | Cache \(maximum\) | 
 | --- | --- | --- | 
-| File gateway | 150 GiB | 64 TiB | 
+| File Gateway | 150 GiB | 64 TiB | 
 
 **Note**  
 You can configure one or more local drives for your cache, up to the maximum capacity\.  
@@ -64,12 +76,12 @@ Network bandwidth requirements vary based on the quantity of data that is upload
 Following, you can find information about required ports and how to allow access through firewalls and routers\.
 
 **Note**  
-In some cases, you might deploy FSx File on Amazon EC2 or use other types of deployment \(including on\-premises\) with network security policies that restrict AWS IP address ranges\. In these cases, your gateway might experience service connectivity issues when the AWS IP range values changes\. The AWS IP address range values that you need to use are in the Amazon service subset for the AWS Region that you activate your gateway in\. For the current IP range values, see [AWS IP address ranges](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) in the *AWS General Reference*\.
+In some cases, you might deploy your gateway on Amazon EC2 or use other types of deployment \(including on\-premises\) with network security policies that restrict AWS IP address ranges\. In these cases, your gateway might experience service connectivity issues when the AWS IP range values changes\. The AWS IP address range values that you need to use are in the Amazon service subset for the AWS Region that you activate your gateway in\. For the current IP range values, see [AWS IP address ranges](https://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html) in the *AWS General Reference*\.
 
 **Topics**
 + [Port requirements](#requirements-network)
 + [Networking and firewall requirements for the Storage Gateway Hardware Appliance](#appliance-network-requirements)
-+ [Allowing Storage Gateway access through firewalls and routers](#allow-firewall-gateway-access)
++ [Allowing AWS Storage Gateway access through firewalls and routers](#allow-firewall-gateway-access)
 + [Configuring security groups for your Amazon EC2 gateway instance](#EC2GatewayCustomSecurityGroup-common)
 
 ### Port requirements<a name="requirements-network"></a>
@@ -83,38 +95,40 @@ The following ports are common to all gateway types and are required by all gate
 
 |  Protocol  |  Port  |  Direction  |  Source  |  Destination  |  How used  | 
 | --- | --- | --- | --- | --- | --- | 
-|  TCP  |  443 \(HTTPS\)  |  Outbound  |  Storage Gateway  |  AWS  |  For communication from Storage Gateway to the AWS service endpoint\. For information about service endpoints, see [Allowing Storage Gateway access through firewalls and routers](#allow-firewall-gateway-access)\.  | 
-|  TCP  |  80 \(HTTP\)  |  Inbound  |  The host from which you connect to the AWS Management Console\.  |  Storage Gateway  |  By local systems to obtain the storage gateway activation key\. Port 80 is only used during activation of the Storage Gateway appliance\.  Storage Gateway does not require port 80 to be publicly accessible\. The required level of access to port 80 depends on your network configuration\. If you activate your gateway from the Storage Gateway console, the host from which you connect to the console must have access to your gateway’s port 80\.  | 
+|  TCP  |  443 \(HTTPS\)  |  Outbound  |  Storage Gateway  |  AWS  |  For communication from Storage Gateway to the AWS service endpoint\. For information about service endpoints, see [Allowing AWS Storage Gateway access through firewalls and routers](#allow-firewall-gateway-access)\.  | 
+|  TCP  |  80 \(HTTP\)  |  Inbound  |  The host from which you connect to the AWS Management Console\.  |  Storage Gateway  |  By local systems to obtain the Storage Gateway activation key\. Port 80 is only used during activation of the Storage Gateway appliance\.  Storage Gateway does not require port 80 to be publicly accessible\. The required level of access to port 80 depends on your network configuration\. If you activate your gateway from the Storage Gateway console, the host from which you connect to the console must have access to your gateway’s port 80\.  | 
 |  UDP/UDP  |  53 \(DNS\)  |  Outbound  |  Storage Gateway  |  DNS server  |  For communication between Storage Gateway and the DNS server\.  | 
 |  TCP  |  22 \(Support channel\)  |  Outbound  |  Storage Gateway  |  AWS Support  |  Allows AWS Support to access your gateway to help you with troubleshooting gateway issues\. You don't need this port open for the normal operation of your gateway, but it is required for troubleshooting\.  | 
 |  UDP  |  123 \(NTP\)  |  Outbound  |  NTP client  |  NTP server  |  Used by local systems to synchronize VM time to the host time\.   | 
 
-**Ports for file gateways**
+**Ports for File Gateways**
 
-For FSx File, you must use Microsoft Active Directory to allow domain users to access a Server Message Block \(SMB\) file share\. You can join your file gateway to any valid Microsoft Windows domain \(resolvable by DNS\)\.
+For FSx File Gateway, you must use Microsoft Active Directory to allow domain users to access a Server Message Block \(SMB\) file share\. You can join your File Gateway to any valid Microsoft Windows domain \(resolvable by DNS\)\.
 
 You can also use the AWS Directory Service to create an [AWS Managed Microsoft AD](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/directory_microsoft_ad.html) in the Amazon Web Services Cloud\. For most AWS Managed Microsoft AD deployments, you need to configure the Dynamic Host Configuration Protocol \(DHCP\) service for your VPC\. For information about creating a DHCP options set, see [Create a DHCP options set](https://docs.aws.amazon.com/directoryservice/latest/admin-guide/dhcp_options_set.html) in the *AWS Directory Service Administration Guide*\.
 
-FSx File requires the following ports\. 
+FSx File Gateway requires the following ports\. 
 
 
 |  Protocol  |  Port  |  Direction  |  Source  |  Destination  |  How used  | 
 | --- | --- | --- | --- | --- | --- | 
-|  UDP NetBIOS  |  137  |  Inbound and outbound  |    |  Microsoft Active Directory  |  For connecting to Microsoft Active Directory\.  | 
-|  UDP NetBIOS  |  138  |  Inbound and outbound  |    |  | For Datagram service | 
-|  TCP LDAP   |  389  |  Inbound and outbound  |    |    |  For Directory System Agent \(DSA\) client connection  | 
-|  TCP v2/v3 data  |  445  |  Outbound  |    |    |  Storage data transfer between file gateway and FSx for Windows File Server  | 
-|  TCP \(HTTPS\)  |  443  |  Outbound  |    |  Storage Gateway service endpoints  |  Management control – Used for communication from an Storage Gateway VM to an AWS service endpoint  | 
-|  TCP HTTPS  |  443  |  Outbound  |  |  Amazon CloudFront  |  For gateway activation  | 
-|  TCP  |  443  |  Outbound  |    |  VPC endpoint usage  |  Management control – Used for communication from an Storage Gateway VM to an AWS service endpoint\.  | 
-|  TCP  |  1026  |  Outbound  |    |    |  Used for control traffic  | 
-|  TCP  |  1027  | Outbound |    |    |  Used only during activation and can then be closed  | 
-|  TCP  | 1028 | Outbound |    |    | Used for control traffic | 
-|  TCP  |  1031  | Outbound |    |    |  Used only for software updates for file gateways  | 
-|  TCP  |  2222  |  Outbound  |    |    |  Used to open a support channel to the gateway when using VPC endpoints  | 
-|  TCP \(HTTPS\)  |  8080  |  Inbound  |    |    |  Required briefly for activation of a hardware appliance  | 
-
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/xxxxx.png)
+|  UDP NetBIOS  |  137  |  Inbound and outbound  | Storage Gateway |  Microsoft Active Directory  |  For connecting to Microsoft Active Directory\.  | 
+|  UDP NetBIOS  |  138  |  Inbound and outbound  | Storage Gateway |  Microsoft Active Directory  | For Datagram service | 
+|  TCP/UDP \(SMBv2\)  | 139 | Inbound | Client | Storage Gateway |  Required for SMBv2 clients connecting to the Storage Gateway  | 
+|  TCP/UDP LDAP  |  389  |  Inbound and outbound  |  Storage Gateway  |  Microsoft Active Directory  |  Directory System Agent \(DSA\); client connection  | 
+|  TCP/UDP Kerberos  |  88  |  Inbound and outbound  |  Storage Gateway  |  Microsoft Active Directory  |  | 
+|  TCP Distributed Computing Environment/End Point Mapper \(DCE/EMAP\)  |  135  |  Inbound and outbound  |  Storage Gateway  |  Microsoft Active Directory  |  | 
+|  TCP/UDP \(SMBv3\)  |  445  |  Inbound and outbound  |  Storage Gateway and Clients  |  Amazon FSx Endpoints and Storage Gateway  |  Storage data transfer between File Gateway and FSx for Windows File Server Also to serve data transfer between clients and Storage Gateway  | 
+|  TCP \(HTTPS\)  |  443  |  Outbound  | Storage Gateway |  Storage Gateway service endpoints  |  Management control – Used for communication from a Storage Gateway VM to an AWS service endpoint  | 
+|  TCP HTTPS  |  443  |  Outbound  | Storage Gateway |  Amazon CloudFront  |  For gateway activation  | 
+|  TCP  |  443  |  Outbound  | Storage Gateway |  VPC endpoint usage  |  Management control – Used for communication from an Storage Gateway VM to an AWS service endpoint  | 
+|  TCP  |  1026  |  Outbound  | Storage Gateway |  VPC endpoint usage  |  Used for control traffic  | 
+|  TCP  |  1027  | Outbound | Storage Gateway |  VPC endpoint usage  |  Used only during activation and can then be closed  | 
+|  TCP  | 1028 | Outbound | Storage Gateway |  VPC endpoint usage  | Used for control traffic | 
+|  TCP  |  1031  | Outbound | Storage Gateway |  Storage Gateway service endpoints  |  Used only for software updates for File Gateways  | 
+|  TCP  |  2222  |  Outbound  | Storage Gateway | AWS Support |  Used to open a support channel to the gateway when using VPC endpoints  | 
+|  TCP \(HTTPS\)  |  8080  |  Inbound  |  The host from which you connect to the AWS Management Console  | Storage Gateway |  Required briefly for activation of a hardware appliance  | 
+|  TCP \(HTTPS\)  | 80 | Inbround |  The host from which you connect to the AWS Management Console  | Storage Gateway |  Required briefly for activation of a hardware appliance  | 
 
 ### Networking and firewall requirements for the Storage Gateway Hardware Appliance<a name="appliance-network-requirements"></a>
 
@@ -140,7 +154,7 @@ You can use the iDRAC port for remote server management\.
 
 
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/ApplianceFirewallRules.png)
+![\[network resources connected to hardware appliance using various ports.\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/ApplianceFirewallRules.png)
 
 A hardware appliance requires the following ports to operate\.
 
@@ -166,16 +180,25 @@ All IP addresses on the same network interface \(NIC\), whether for a gateway or
 
 
 
-![\[Image NOT FOUND\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/ApplianceAddressing.png)
+![\[host IP and service IP on a single subnet sharing one NIC.\]](http://docs.aws.amazon.com/filegateway/latest/filefsxw/images/ApplianceAddressing.png)
 
 For more information about activating and configuring a hardware appliance, see [Using the Storage Gateway Hardware Appliance](hardware-appliance.md)\.
 
-### Allowing Storage Gateway access through firewalls and routers<a name="allow-firewall-gateway-access"></a>
+### Allowing AWS Storage Gateway access through firewalls and routers<a name="allow-firewall-gateway-access"></a>
 
 Your gateway requires access to the following service endpoints to communicate with AWS\. If you use a firewall or router to filter or limit network traffic, you must configure your firewall and router to allow these service endpoints for outbound communication to AWS\.
 
+**Note**  
+If you configure private VPC endpoints for your Storage Gateway to use for connection and data transfer to and from AWS, your gateway does not require access to the public internet\. For more information, see [Activating a gateway in a virtual private cloud](https://docs.aws.amazon.com/filegateway/latest/filefsxw/gateway-private-link.html)\.
+
 **Important**  
 Depending on your gateway's AWS Region, replace *region* in the service endpoint with the correct Region string\.
+
+The following service endpoint is required by all gateways for head\-bucket operations\.
+
+```
+s3.amazonaws.com:443
+```
 
 The following service endpoints are required by all gateways for control path \(`anon-cp`, `client-cp`, `proxy-app`\) and data path \(`dp-1`\) operations\.
 
@@ -212,14 +235,14 @@ A Storage Gateway VM is configured to use the following NTP servers\.
 2.amazon.pool.ntp.org
 3.amazon.pool.ntp.org
 ```
-+ Storage Gateway—For supported AWS Regions and a list of AWS service endpoints that you can use with Storage Gateway, see [Storage Gateway endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/sg.html) in the *AWS General Reference*\.
++ Storage Gateway—For supported AWS Regions and a list of AWS service endpoints that you can use with Storage Gateway, see [AWS Storage Gateway endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/sg.html) in the *AWS General Reference*\.
 + Storage Gateway Hardware Appliance—For supported AWS Regions that you can use with the hardware appliance, see [Storage Gateway hardware appliance Regions](https://docs.aws.amazon.com/general/latest/gr/sg.html#sg-hardware-appliance) in the *AWS General Reference*\.
 
 
 
 ### Configuring security groups for your Amazon EC2 gateway instance<a name="EC2GatewayCustomSecurityGroup-common"></a>
 
-In Storage Gateway, a security group controls traffic to your Amazon EC2 gateway instance\. When you configure a security group, we recommend the following:
+In AWS Storage Gateway, a security group controls traffic to your Amazon EC2 gateway instance\. When you configure a security group, we recommend the following:
 + The security group should not allow incoming connections from the outside internet\. It should allow only instances within the gateway security group to communicate with the gateway\. 
 
   If you need to allow instances to connect to the gateway from outside its security group, we recommend that you allow connections only on port 80 \(for activation\)\.
@@ -231,26 +254,26 @@ In Storage Gateway, a security group controls traffic to your Amazon EC2 gateway
 You can run Storage Gateway on\-premises as either a virtual machine \(VM\) appliance or a physical hardware appliance, or in AWS as an Amazon EC2 instance\.
 
 Storage Gateway supports the following hypervisor versions and hosts:
-+ VMware ESXi Hypervisor \(version 6\.0, 6\.5 or 6\.7\) – A free version of VMware is available on the [VMware website](http://www.vmware.com/products/vsphere-hypervisor/overview.html)\. For this setup, you also need a VMware vSphere client to connect to the host\.
-+  Microsoft Hyper\-V Hypervisor \(version 2012 R2 or 2016\) – A free, standalone version of Hyper\-V is available at the [Microsoft Download Center](http://www.microsoft.com/en-us/search/Results.aspx?q=hyper-V&form=DLC)\. For this setup, you need a Microsoft Hyper\-V Manager on a Microsoft Windows client computer to connect to the host\.
++ VMware ESXi Hypervisor \(version 6\.5, 6\.7, or 7\.0\) – A free version of VMware is available on the [VMware website](http://www.vmware.com/products/vsphere-hypervisor/overview.html)\. For this setup, you also need a VMware vSphere client to connect to the host\.
++  Microsoft Hyper\-V Hypervisor \(version 2012 R2, 2016, 2019, or 2022\) – A free, standalone version of Hyper\-V is available at the [Microsoft Download Center](http://www.microsoft.com/en-us/search/Results.aspx?q=hyper-V&form=DLC)\. For this setup, you need a Microsoft Hyper\-V Manager on a Microsoft Windows client computer to connect to the host\.
 + Linux Kernel\-based Virtual Machine \(KVM\) – A free, open\-source virtualization technology\. KVM is included in all versions of Linux version 2\.6\.20 and newer\. Storage Gateway is tested and supported for the CentOS/RHEL 7\.7, Ubuntu 16\.04 LTS, and Ubuntu 18\.04 LTS distributions\. Any other modern Linux distribution may work, but function or performance is not guaranteed\. We recommend this option if you already have a KVM environment up and running and you are already familiar with how KVM works\.
-+ Amazon EC2 instance – Storage Gateway provides an Amazon Machine Image \(AMI\) that contains the gateway VM image\. For information about how to deploy a gateway on Amazon EC2, see [Deploying a file gateway on an Amazon EC2 host](ec2-gateway-file.md)\.
++ Amazon EC2 instance – Storage Gateway provides an Amazon Machine Image \(AMI\) that contains the gateway VM image\. For information about how to deploy a gateway on Amazon EC2, see [Deploying an Amazon EC2 instance to host your Amazon FSx File Gateway](ec2-gateway-file.md)\.
 + Storage Gateway Hardware Appliance – Storage Gateway provides a physical hardware appliance as an on\-premises deployment option for locations with limited virtual machine infrastructure\.
 
 **Note**  
 Storage Gateway doesn’t support recovering a gateway from a VM that was created from a snapshot or clone of another gateway VM or from your Amazon EC2 AMI\. If your gateway VM malfunctions, activate a new gateway and recover your data to that gateway\. For more information, see [Recovering from an unexpected virtual machine shutdown](recover-data-from-gateway.md#recover-from-gateway-shutdown)\.  
 Storage Gateway doesn’t support dynamic memory and virtual memory ballooning\.
 
-## Supported SMB clients for a file gateway<a name="requirements-smb-versions"></a>
+## Supported SMB clients for a File Gateway<a name="requirements-smb-versions"></a>
 
-File gateways support the following Service Message Block \(SMB\) clients:
-+ Microsoft Windows Server 2008 and later
+File Gateways support the following Service Message Block \(SMB\) clients:
++ Microsoft Windows Server 2008 R2 and later
 + Windows desktop versions: 10, 8, and 7\.
 +  Windows Terminal Server running on Windows Server 2008 and later
 **Note**  
- Server Message Block encryption requires clients that support SMB v2\.1\.
+ Server Message Block encryption requires clients that support SMB v3\.x dialects\.
 
-## Supported file system operations for a file gateway<a name="requirements-file-operations"></a>
+## Supported file system operations for a File Gateway<a name="requirements-file-operations"></a>
 
 Your SMB client can write, read, delete, and truncate ﬁles\. When clients send writes to Storage Gateway, it writes to local cache synchronously\. Then it writes to Amazon FSx asynchronously through optimized transfers\. Reads are first served through the local cache\. If data is not available, it's fetched through Amazon FSx as a read\-through cache\.
 

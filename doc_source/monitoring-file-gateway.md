@@ -1,39 +1,37 @@
-# Monitoring your file gateway<a name="monitoring-file-gateway"></a>
+--------
 
-You can monitor your file gateway and associated resources in Storage Gateway by using Amazon CloudWatch metrics and file share audit logs\. You can also use CloudWatch Events to get notified when your file operations are done\. For information about file gateway type metrics, see [Monitoring your file gateway](#monitoring-file-gateway)\.
+Amazon S3 File Gateway documentation has been moved to [What is Amazon S3 File Gateway?](https://docs.aws.amazon.com/filegateway/latest/files3/WhatIsStorageGateway.html)
+
+Volume Gateway documentation has been moved to [What is Volume Gateway?](https://docs.aws.amazon.com/storagegateway/latest/vgw/WhatIsStorageGateway.html)
+
+Tape Gateway documentation has been moved to [What is Tape Gateway?](https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html)
+
+--------
+
+# Monitoring your FSx File Gateway<a name="monitoring-file-gateway"></a>
+
+You can monitor your FSx File Gateway and associated resources in AWS Storage Gateway by using Amazon CloudWatch metrics and audit logs\. You can also use CloudWatch Events to get notified when your file operations are done\.
 
 **Topics**
-+ [Getting file gateway health logs with CloudWatch log groups](#cw-log-groups)
++ [Getting FSx File Gateway health logs with CloudWatch log groups](#cw-log-groups)
 + [Using Amazon CloudWatch metrics](#using-CloudWatch-metrics)
++ [Understanding gateway metrics](#understanding-file-gateway-metrics)
 + [Understanding file system metrics](#monitoring-file-gateway-resources)
-+ [Understanding file gateway audit logs](#audit-logs)
++ [Understanding FSx File Gateway audit logs](#audit-logs)
 
-## Getting file gateway health logs with CloudWatch log groups<a name="cw-log-groups"></a>
+## Getting FSx File Gateway health logs with CloudWatch log groups<a name="cw-log-groups"></a>
 
-You can use Amazon CloudWatch Logs to get information about the health of your file gateway and related resources\. You can use the logs to monitor your gateway for errors that it encounters\. In addition, you can use Amazon CloudWatch subscription filters to automate processing of the log information in real time\. For more information, see [Real\-time Processing of Log Data with Subscriptions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Subscriptions.html) in the *Amazon CloudWatch User Guide\.*
+You can use Amazon CloudWatch Logs to get information about the health of your FSx File Gateway and related resources\. You can use the logs to monitor your gateway for errors that it encounters\. In addition, you can use Amazon CloudWatch subscription filters to automate processing of the log information in real time\. For more information, see [Real\-time Processing of Log Data with Subscriptions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Subscriptions.html) in the *Amazon CloudWatch User Guide\.*
 
-For example, you can configure a CloudWatch log group to monitor your gateway and get notified when your file gateway fails to upload files to an Amazon FSx file system\. You can configure the group either when you are activating the gateway or after your gateway is activated and up and running\. For information about how to configure a CloudWatch log group when activating a gateway, see [Configure Amazon CloudWatch logging](configure-loging-file.md)\. For general information about CloudWatch log groups, see [ Working with Log Groups and Log Streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) in the *Amazon CloudWatch User Guide\.*
+For example, you can configure a CloudWatch log group to monitor your gateway and get notified when your FSx File Gateway fails to upload files to an Amazon FSx file system\. You can configure the group either when you are activating the gateway or after your gateway is activated and up and running\. For information about how to configure a CloudWatch log group when activating a gateway, see [Configure your Amazon FSx File Gateway](create-gateway-file.md#configure-gateway-fsx-file)\. For general information about CloudWatch log groups, see [ Working with Log Groups and Log Streams](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html) in the *Amazon CloudWatch User Guide\.*
 
-The following is an example of an error reported by a file gateway\. 
-
-In the preceding gateway health log, these items specify the given information:
-+ `source: share-E1A2B34C` indicates the file share that encountered this error\.
-+ `"type": "InaccessibleStorageClass"` indicates the type of error that occurred\. In this case, this error was encountered when the gateway was trying to upload the specified object to Amazon S3 or read from Amazon S3\. However, in this case, the object has transitioned to Amazon S3 Glacier\. The value of `"type"` can be any error that the file gateway encounters\. For a list of possible errors, see [Troubleshooting file gateway issues](troubleshooting-file-gateway-issues.md)\.
-+  `"operation": "S3Upload"` indicates that this error occurred when the gateway was trying to upload this object to S3\.
-+ `"key": "myFolder/myFile.text"` indicates the object that caused the failure\.
-+ `gateway": "sgw-B1D123D4` indicates the file gateway that encountered this error\.
-+ `"timestamp": "1565740862516"` indicates the time that the error occurred\.
-
-For information about how to troubleshoot and fix these types of errors, see [Troubleshooting file gateway issues](troubleshooting-file-gateway-issues.md)\.
+For information about how to troubleshoot the errors that may be reported by FSx File Gateway, see [Troubleshooting: File Gateway issues](troubleshooting-file-gateway-issues.md)\.
 
 ### Configuring a CloudWatch log group after your gateway is activated<a name="creat-cwlogroup"></a>
 
 The following procedure shows you how to configure a CloudWatch Log Group after your gateway is activated\.
 
-------
-#### [ New console ]
-
-**To configure a CloudWatch log group to work with your file gateway**
+**To configure a CloudWatch log group to work with your FSx File Gateway**
 
 1. Sign in to the AWS Management Console and open the Storage Gateway console at [https://console\.aws\.amazon\.com/storagegateway/home](https://console.aws.amazon.com/storagegateway/)\.
 
@@ -56,10 +54,7 @@ The following procedure shows you how to configure a CloudWatch Log Group after 
 
    1. Choose the **Details** tab, and under **Health logs**, choose **CloudWatch Logs**\. The **Log group details** page opens in the CloudWatch console\.
 
-------
-#### [ Original console ]
-
-**To configure a CloudWatch Log Group to work with your file gateway**
+**To configure a CloudWatch Log Group to work with your FSx File Gateway**
 
 1. Sign in to the AWS Management Console and open the Storage Gateway console at [https://console\.aws\.amazon\.com/storagegateway/home](https://console.aws.amazon.com/storagegateway/)\.
 
@@ -75,13 +70,11 @@ The following procedure shows you how to configure a CloudWatch Log Group after 
 
 1. To see the logs for your gateway, choose the gateway, and then choose the **Details** tab\.
 
-------
-
-For information about how to troubleshoot errors, see [Troubleshooting file gateway issues](troubleshooting-file-gateway-issues.md)\.
+For information about how to troubleshoot errors, see [Troubleshooting: File Gateway issues](troubleshooting-file-gateway-issues.md)\.
 
 ## Using Amazon CloudWatch metrics<a name="using-CloudWatch-metrics"></a>
 
-You can get monitoring data for your file gateway by using either the AWS Management Console or the CloudWatch API\. The console displays a series of graphs based on the raw data from the CloudWatch API\. The CloudWatch API can also be used through one of the [AWS SDKs](http://aws.amazon.com/tools) or [Amazon CloudWatch API](http://aws.amazon.com/cloudwatch) tools\. Depending on your needs, you might prefer to use either the graphs displayed in the console or retrieved from the API\.
+You can get monitoring data for your FSx File Gateway by using either the AWS Management Console or the CloudWatch API\. The console displays a series of graphs based on the raw data from the CloudWatch API\. The CloudWatch API can also be used through one of the [AWS SDKs](http://aws.amazon.com/tools) or [Amazon CloudWatch API](http://aws.amazon.com/cloudwatch) tools\. Depending on your needs, you might prefer to use either the graphs displayed in the console or retrieved from the API\.
 
 Regardless of which method you use to work with metrics, you must specify the following information:
 + The metric dimension to work with\. A *dimension* is a name\-value pair that helps you to uniquely identify a metric\. The dimensions for Storage Gateway are `GatewayId` and `GatewayName`\. In the CloudWatch console, you can use the `Gateway Metrics` view to select gateway\-specific dimensions\. For more information about dimensions, see [Dimensions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Dimension) in the *Amazon CloudWatch User Guide*\.
@@ -92,18 +85,60 @@ The following table summarizes the types of Storage Gateway metric data that are
 
 | Amazon CloudWatch namespace | Dimension | Description | 
 | --- | --- | --- | 
-| AWS/StorageGateway |  GatewayId, GatewayName  |  These dimensions filter for metric data that describes aspects of the gateway\. You can identify a file gateway to work with by specifying both the `GatewayId` and the `GatewayName` dimensions\. Throughput and latency data of a gateway are based on all the file shares in the gateway\. Data is available automatically in 5\-minute periods at no charge\.   | 
+| AWS/StorageGateway |  GatewayId, GatewayName  |  These dimensions filter for metric data that describes aspects of the gateway\. You can identify a FSx File Gateway to work with by specifying both the `GatewayId` and the `GatewayName` dimensions\. Throughput and latency data of a gateway are based on all the file shares in the gateway\. Data is available automatically in 5\-minute periods at no charge\.   | 
 
 Working with gateway and file metrics is similar to working with other service metrics\. You can find a discussion of some of the most common metrics tasks in the CloudWatch documentation listed following:
 + [Viewing available metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/viewing_metrics_with_cloudwatch.html)
 + [Getting statistics for a metric](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/getting-metric-statistics.html)
 + [Creating CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html)
 
+## Understanding gateway metrics<a name="understanding-file-gateway-metrics"></a>
+
+The following table describes metrics that cover FSx File Gateways\. Each gateway has a set of metrics associated with it\. Some gateway\-specific metrics have the same name as certain file\-system\-specific metrics\. These metrics represent the same kinds of measurements, but are scoped to the gateway rather than the file system\.
+
+Always specify whether you want to work with a gateway or a file system when working with a particular metric\. Specifically, when working with gateway metrics, you must specify the `Gateway Name` for the gateway whose metric data you want to view\. For more information, see [Using Amazon CloudWatch metrics](#using-CloudWatch-metrics)\.
+
+**Note**  
+Some metrics return data points only when new data has been generated during the most recent monitoring period\.
+
+The following table describes the metrics that you can use to get information about your FSx File Gateways\.
+
+
+| Metric | Description | 
+| --- | --- | 
+| AvailabilityNotifications |  This metric reports the number of availability\-related health notifications that were generated by the gateway in the reporting period\. Units: Count  | 
+| CacheDirectorySize |  This metric tracks the size of folders in the gateway cache\. Folder size is determined by the number of files and subfolders in its first level, this does not count recursively into subfolders\. Use this metric with the `Average` statistic to measure the average size of a folder in the gateway cache\. Use this metric with the `Max` statistic to measure the maximum size of a folder in the gateway cache\. Units: Count  | 
+| CacheFileSize |  This metric tracks the size of files in the gateway cache\. Use this metric with the `Average` statistic to measure the average size of a file in the gateway cache\. Use this metric with the `Max` statistic to measure the maximum size of a file in the gateway cache\. Units: Bytes  | 
+| CacheFree |  This metric reports the number of available bytes in the gateway cache\. Units: Bytes  | 
+| CacheHitPercent |  Percent of application read operations from the gateway that are served from cache\. The sample is taken at the end of the reporting period\. When there are no application read operations from the gateway, this metric reports 100 percent\. Units: Percent  | 
+| CachePercentDirty |  The overall percentage of the gateway cache that has not been persisted to AWS\. The sample is taken at the end of the reporting period\. Units: Percent  | 
+| CachePercentUsed  |  The overall percent of the gateway cache storage that is used\. The sample is taken at the end of the reporting period\. Units: Percent  | 
+| CacheUsed |  This metric reports the number of used bytes in the gateway cache\. Units: Bytes  | 
+| CloudBytesDownloaded |  The total number of bytes that the gateway downloaded from AWS during the reporting period\. Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure IOPS\. Units: Bytes  | 
+| CloudBytesUploaded |  The total number of bytes that the gateway uploaded to AWS during the reporting period\. Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure input/output operations per second \(IOPS\)\. Units: Bytes  | 
+| FilesFailingUpload |  This metric tracks the number of files which are failing to upload to AWS\. These files will generate health notifications which contain more information on the issue\. Use this metric with the `Sum` statistic to show the number of files which are currently failing to upload to AWS\. Units: Count  | 
+| FileShares |  This metric reports the number of file shares on the gateway\. Units: Count  | 
+| FileSystem\-ERROR |  This metric provides the number of file system associations on this gateways which are in the ERROR state\. If this metric reports any file system associations are in the ERROR state, then it is likely there is a problem with the gateway which is may cause disruption to your workflow\. It is recommended to create an alarm for when this metric reports a non\-zero value\. Units: Count  | 
+| HealthNotifications |  This metric reports the number of health notifications that were generated by this gateway in the reporting period\. Units: Count  | 
+| IndexEvictions |  This metric reports the number of files whose metadata was evicted from the cached index of file metadata to make room for new entries\. The gateway maintains this metadata index, which is populated from the AWS Cloud on demand\. Units: Count  | 
+| IndexFetches |  This metric reports the number of files for which metadata was fetched\. The gateway maintains a cached index of file metadata, which is populated from the AWS Cloud on demand\. Units: Count  | 
+| IoWaitPercent |  This metric reports the percentage of time that the CPU is waiting for a response from the local disk\. Units: Percent  | 
+| MemTotalBytes |  This metric reports the total amount of memory on the gateway\. Units: Bytes  | 
+| MemUsedBytes |  This metric reports the amount of used memory on the gateway\. Units: Bytes  | 
+| RootDiskFreeBytes |  This metric reports the number of available bytes on the root disk of the gateway\. If this metric reports less than 20 GB are free, you should increase the size of the root disk\. To increase the root disk size, you can increase the size of existing root disk on the VM\. When the VM is rebooted, gateway recognizes the increased size on the root disk\. Units: Bytes  | 
+| SmbV2Sessions |  This metric reports the number of SMBv2 sessions that are active on the gateway\. Units: Count  | 
+| SmbV3Sessions |  This metric reports the number of SMBv3 sessions that are active on the gateway\. Units: Count  | 
+| TotalCacheSize |  This metric reports the total size of the cache\. Units: Bytes  | 
+| UserCpuPercent |  This metric reports the percentage of time that is spent on gateway processing\. Units: Percent  | 
+
 ## Understanding file system metrics<a name="monitoring-file-gateway-resources"></a>
 
-You can find information following about the Storage Gateway metrics that cover file shares\. Each file share has a set of metrics associated with it\. Some file share\-specific metrics have the same name as certain gateway\-specific metrics\. These metrics represent the same kinds of measurements, but are scoped to the file share instead\. 
+You can find information following about the Storage Gateway metrics that cover file systems\. Each file system has a set of metrics associated with it\. Some file system\-specific metrics have the same name as certain gateway\-specific metrics\. These metrics represent the same kinds of measurements, but are scoped to the file system instead\. 
 
-Always specify whether you want to work with either a gateway or a file share metric before working with a metric\. Specifically, when working with file share metrics, you must specify the `File share ID` that identifies the file share for which you are interested in viewing metrics\. For more information, see [Using Amazon CloudWatch metrics](#using-CloudWatch-metrics)\.
+Always specify whether you want to work with either a gateway or a file system metric before working with a metric\. Specifically, when working with file system metrics, you must specify the `File system ID` that identifies the file system for which you are interested in viewing metrics\. For more information, see [Using Amazon CloudWatch metrics](#using-CloudWatch-metrics)\.
+
+**Note**  
+Some metrics return data points only when new data has been generated during the most recent monitoring period\.
 
 The following table describes the Storage Gateway metrics that you can use to get information about your file shares\.
 
@@ -111,20 +146,20 @@ The following table describes the Storage Gateway metrics that you can use to ge
 | Metric | Description | 
 | --- | --- | 
 | CacheHitPercent |  Percent of application read operations from the file shares that are served from cache\. The sample is taken at the end of the reporting period\. When there are no application read operations from the file share, this metric reports 100 percent\.  Units: Percent  | 
-| CachePercentDirty |  The file share's contribution to the overall percentage of the gateway's cache that has not been persisted to AWS\. The sample is taken at the end of the reporting period\. Use the `CachePercentDirty` metric of the gateway to view the overall percentage of the gateway's cache that has not been persisted to AWS\. Units: Percent  | 
+| CachePercentDirty |  The file share's contribution to the overall percentage of the gateway's cache that has not been persisted to AWS\. The sample is taken at the end of the reporting period\. Use this metric with the `Sum` statistic\. Ideally, this metric should remain low\. Use the `CachePercentDirty` metric of the gateway to view the overall percentage of the gateway's cache that has not been persisted to AWS\. Units: Percent  | 
 | CachePercentUsed |  The file share's contribution to the overall percent use of the gateway's cache storage\. The sample is taken at the end of the reporting period\. Use the `CachePercentUsed` metric of the gateway to view overall percent use of the gateway's cache storage\. Units: Percent  | 
 | CloudBytesUploaded |  The total number of bytes that the gateway uploaded to AWS during the reporting period\.  Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure IOPS\.  Units: Bytes  | 
 | CloudBytesDownloaded |  The total number of bytes that the gateway downloaded from AWS during the reporting period\.  Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure input/output operations per second \(IOPS\)\. Units: Bytes  | 
 | ReadBytes  |  The total number of bytes read from your on\-premises applications in the reporting period for a file share\. Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure IOPS\. Units: Bytes  | 
 | WriteBytes |  The total number of bytes written to your on\-premises applications in the reporting period\. Use this metric with the `Sum` statistic to measure throughput and with the `Samples` statistic to measure IOPS\. Units: Bytes  | 
 
-## Understanding file gateway audit logs<a name="audit-logs"></a>
+## Understanding FSx File Gateway audit logs<a name="audit-logs"></a>
 
-Amazon FSx File Gateway \(FSx File\) audit logs provide you with details about user access to files and folders within a file system association\. You can use audit logs to monitor user activities and take action if inappropriate activity patterns are identified\. The logs are formatted similar to Windows Server security log events, to support compatibility with existing log processing tools for Windows security events\. 
+Amazon FSx File Gateway \(FSx File Gateway\) audit logs provide you with details about user access to files and folders within a file system association\. You can use audit logs to monitor user activities and take action if inappropriate activity patterns are identified\. The logs are formatted similar to Windows Server security log events, to support compatibility with existing log processing tools for Windows security events\. 
 
 **Operations**
 
-The following table describes the file gateway audit log file access operations\.
+The following table describes the FSx File Gateway audit log file access operations\.
 
 
 | Operation name | Definition | 
@@ -138,7 +173,7 @@ The following table describes the file gateway audit log file access operations\
 
 **Attributes**
 
-The following table describes FSx File audit log file access attributes\.
+The following table describes FSx File Gateway audit log file access attributes\.
 
 
 | Attribute | Definition | 
@@ -151,7 +186,7 @@ The following table describes FSx File audit log file access attributes\.
 | `mtime` | This time that the object's content was modified, set by the client\. | 
 | `version` | The version of the audit log format\. | 
 | `ObjectType` | Defines whether the object is a file or folder\. | 
-| locationDnsName | The FSx File system DNS name\. | 
+| locationDnsName | The FSx File Gateway system DNS name\. | 
 | `objectName` | The full path to the object\. | 
 | `ctime` | The time that the object’s content or metadata was modified, set by the client\. | 
 | `shareName` | The name of the share that is being accessed\. | 
@@ -163,7 +198,7 @@ The following table describes FSx File audit log file access attributes\.
 
 **Attributes logged per operation**
 
-The following table describes the FSx File audit log attributes logged in each file access operation\.
+The following table describes the FSx File Gateway audit log attributes logged in each file access operation\.
 
 
 |  | Read data | Write data | Create folder | Create file | Rename file/folder | Delete file/folder | Write attributes \(change ACL\) | Write attributes \(chown\) | Write attributes \(chmod\) | Write attributes \(chgrp\) | 
